@@ -50,7 +50,6 @@ export function ChatPanel({
   showScrollToBottomButton,
   scrollContainerRef,
 }: ChatPanelProps) {
-  const safeMessages = messages || []
   const [showEmptyScreen, setShowEmptyScreen] = useState(false)
   const router = useRouter()
   const inputRef = useRef<HTMLTextAreaElement>(null)
@@ -76,18 +75,15 @@ export function ChatPanel({
   }
 
   const isToolInvocationInProgress = () => {
-    if (!safeMessages.length) return false
+    if (!messages.length) return false
 
-    const lastMessage = safeMessages[safeMessages.length - 1]
-    if (!lastMessage || lastMessage.role !== "assistant") return false
+    const lastMessage = messages[messages.length - 1]
+    if (lastMessage.role !== "assistant" || !lastMessage.parts) return false
 
     const parts = lastMessage.parts
-    if (!parts || !Array.isArray(parts) || parts.length === 0) return false
-
     const lastPart = parts[parts.length - 1]
-    if (!lastPart) return false
 
-    return lastPart.type === "tool-invocation" && lastPart.toolInvocation?.state === "call"
+    return lastPart?.type === "tool-invocation" && lastPart?.toolInvocation?.state === "call"
   }
 
   // if query is not empty, submit the query
@@ -117,10 +113,10 @@ export function ChatPanel({
     <div
       className={cn(
         "w-full bg-background group/form-container shrink-0",
-        safeMessages.length > 0 ? "sticky bottom-0 px-2 pb-4" : "px-6",
+        messages.length > 0 ? "sticky bottom-0 px-2 pb-4" : "px-6",
       )}
     >
-      {safeMessages.length === 0 && (
+      {messages.length === 0 && (
         <div className="mb-10 flex flex-col items-center gap-4">
           <IconLogo className="size-12 text-muted-foreground" />
           <p className="text-center text-3xl font-semibold">How can I help you today?</p>
@@ -128,7 +124,7 @@ export function ChatPanel({
       )}
       <form onSubmit={handleSubmit} className={cn("max-w-3xl w-full mx-auto relative")}>
         {/* Scroll to bottom button - only shown when showScrollToBottomButton is true */}
-        {showScrollToBottomButton && safeMessages.length > 0 && (
+        {showScrollToBottomButton && messages.length > 0 && (
           <Button
             type="button"
             variant="outline"
@@ -181,7 +177,7 @@ export function ChatPanel({
               <SearchModeToggle />
             </div>
             <div className="flex items-center gap-2">
-              {safeMessages.length > 0 && (
+              {messages.length > 0 && (
                 <Button
                   variant="outline"
                   size="icon"
@@ -207,7 +203,7 @@ export function ChatPanel({
           </div>
         </div>
 
-        {safeMessages.length === 0 && (
+        {messages.length === 0 && (
           <EmptyScreen
             submitMessage={(message) => {
               handleInputChange({

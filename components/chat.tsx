@@ -123,7 +123,7 @@ export function Chat({
 
   // Scroll to the section when a new user message is sent
   useEffect(() => {
-    if (messages && messages.length > 0) {
+    if (sections.length > 0) {
       const lastMessage = messages[messages.length - 1]
       if (lastMessage && lastMessage.role === "user") {
         // If the last message is from user, find the corresponding section
@@ -218,7 +218,7 @@ export function Chat({
         handleInputChange={handleInputChange}
         handleSubmit={onSubmit}
         isLoading={isLoading}
-        messages={messages || []} // Ensure messages is an array
+        messages={messages}
         setMessages={setMessages}
         stop={stop}
         query={query}
