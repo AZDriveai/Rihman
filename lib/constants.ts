@@ -2,7 +2,7 @@ export const CHAT_ID = "chat-id"
 
 export const DEFAULT_MODEL_NAME = "DeepSeek V3"
 
-export const SEARCH_ENABLED = process.env.SEARCH_ENABLED === "true"
+// export const SEARCH_ENABLED = process.env.SEARCH_ENABLED === "true"
 
 export const MAX_MESSAGES = 1000
 
