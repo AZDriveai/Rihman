@@ -1,42 +1,41 @@
 "use client"
 
-import { useState } from "react"
+import { useState, useEffect } from "react"
 import { Chat } from "@/components/chat"
 import { Button } from "@/components/ui/button"
 import { IconLogo } from "@/components/ui/icons"
 import { MessageSquare, Sparkles } from "lucide-react"
-
-// Mock models data - in a real app, this would come from an API
-const mockModels = [
-  {
-    id: "gpt-4o",
-    name: "GPT-4o",
-    provider: "OpenAI",
-    providerId: "openai",
-    enabled: true,
-    toolCallType: "native" as const,
-  },
-  {
-    id: "gpt-4o-mini",
-    name: "GPT-4o Mini",
-    provider: "OpenAI",
-    providerId: "openai",
-    enabled: true,
-    toolCallType: "native" as const,
-  },
-  {
-    id: "claude-3-5-sonnet",
-    name: "Claude 3.5 Sonnet",
-    provider: "Anthropic",
-    providerId: "anthropic",
-    enabled: true,
-    toolCallType: "native" as const,
-  },
-]
+import type { Model } from "@/lib/types/models"
 
 export default function HomePage() {
   const [showChat, setShowChat] = useState(false)
   const [chatId] = useState(() => `chat-${Date.now()}`)
+  const [models, setModels] = useState<Model[]>([])
+
+  // Load models from default-models.json
+  useEffect(() => {
+    const loadModels = async () => {
+      try {
+        const response = await fetch('/default-models.json')
+        const data = await response.json()
+        setModels(data.models || [])
+      } catch (error) {
+        console.error('Failed to load models:', error)
+        // Fallback to basic models if loading fails
+        setModels([
+          {
+            id: "gpt-4o",
+            name: "GPT-4o",
+            provider: "OpenAI",
+            providerId: "openai",
+            enabled: true,
+            toolCallType: "native" as const,
+          }
+        ])
+      }
+    }
+    loadModels()
+  }, [])
 
   if (showChat) {
     return (
@@ -59,7 +58,7 @@ export default function HomePage() {
 
           {/* Chat Interface */}
           <div className="flex-1 overflow-hidden">
-            <Chat id={chatId} savedMessages={[]} models={mockModels} />
+            <Chat id={chatId} savedMessages={[]} models={models} />
           </div>
         </div>
       </div>
