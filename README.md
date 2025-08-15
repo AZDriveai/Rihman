@@ -16,7 +16,7 @@
 ---
 
 **خارطة سير البيانات**:
-```mermaid
+\`\`\`mermaid
 graph LR
 A[مدخلات المستخدم] --> B(تحليل نية)
 B --> C{نوع السياق}
@@ -26,14 +26,14 @@ D & E --> F[توليد استعلام سياقي]
 F --> G[بحث متعدد الأبعاد]
 G --> H[توصية هجينة]
 H --> I[توليد تفسير]
-```
+\`\`\`
 
 ---
 
 ### 🔧 الكود المحدث (دمج تقنيات متقدمة)
 
 #### 📁 `app/neural_engine/quantum_embeddings.py`
-```python
+\`\`\`python
 import torch
 from transformers import AutoModel
 from graphbrain import hgraph
@@ -55,10 +55,10 @@ class QuantumEmbedder:
         # دمج المشاعر كبعد كمي إضافي
         emotion_tensor = torch.tensor([emotion['valence'], emotion['arousal']])
         return torch.cat((text_emb, concept_emb, emotion_tensor), dim=-1)
-```
+\`\`\`
 
 #### 📁 `app/cognitive_layer/emotion_processor.py`
-```python
+\`\`\`python
 from transformers import pipeline
 import numpy as np
 from app.config import *
@@ -91,10 +91,10 @@ class NeuroEmotionAnalyzer:
             "fear": [-0.7, 0.6]
         }
         return emotion_map.get(emotion, [0, 0])
-```
+\`\`\`
 
 #### 📁 `app/data_fusion/recommendation_engine.py`
-```python
+\`\`\`python
 from app.neural_engine.quantum_embeddings import QuantumEmbedder
 from app.cognitive_layer.emotion_processor import NeuroEmotionAnalyzer
 from haystack.nodes import DensePassageRetriever
@@ -133,14 +133,14 @@ class HolisticRecommender:
             "reasoning": emotion_data['neuro_explanation'],
             "emotional_state": emotion_data
         }
-```
+\`\`\`
 
 ---
 
 ### 🌐 واجهات تفاعلية متقدمة
 
 #### 📁 `interface/neuro_ui/brain_interface.py`
-```python
+\`\`\`python
 import gradio as gr
 import neurokit2 as nk
 from app.data_fusion.recommendation_engine import HolisticRecommender
@@ -192,14 +192,14 @@ class NeuroUI:
         </div>
         """
         return result['top_recommendation'], explanation_html
-```
+\`\`\`
 
 ---
 
 ### 🚀 خريطة النشر والتطور
 
 **سيناريوهات النشر**:
-```mermaid
+\`\`\`mermaid
 gantt
     title خارطة التطور الزمني
     dateFormat  YYYY-MM-DD
@@ -214,7 +214,7 @@ gantt
     section الرؤية المستقبلية
     نظام وعي اصطناعي       : ai_cons, 2026-01-01, 90d
     تكامل مع الواقع المعزز  : ar_int, 2027-01-01, 180d
-```
+\`\`\`
 
 **الأثر المعرفي**:
 | المجال | الأثر قصير المدى | الأثر بعيد المدى |
@@ -228,7 +228,7 @@ gantt
 ### ⚠️ خريطة المخاطر والاحتمالات
 
 **مصفوفة المخاطر**:
-```mermaid
+\`\`\`mermaid
 pie showData
     title توزيع المخاطر المحتملة
     "انتهاك الخصوصية" : 35
@@ -236,7 +236,7 @@ pie showData
     "إدمان التكنولوجيا" : 20
     "فجوة معرفية" : 15
     "مخاطر أمنية" : 5
-```
+\`\`\`
 
 **أسئلة فلسفية مفتوحة**:
 1. هل يمكن لنظام ذكي أن يطور "وعياً عاطفياً" حقيقياً؟

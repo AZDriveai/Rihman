@@ -1,15 +1,6 @@
 {
   "models": [
     {
-      "id": "deepseek-reasoner",
-      "name": "DeepSeek R1",
-      "provider": "DeepSeek",
-      "providerId": "deepseek",
-      "enabled": true,
-      "toolCallType": "manual",
-      "toolCallModel": "deepseek-chat"
-    },
-    {
       "id": "deepseek-chat",
       "name": "DeepSeek V3",
       "provider": "DeepSeek",
@@ -19,5 +10,3 @@
     }
   ]
 }
-
-

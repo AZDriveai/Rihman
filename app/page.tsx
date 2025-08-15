@@ -16,22 +16,12 @@ export default function HomePage() {
   useEffect(() => {
     const loadModels = async () => {
       try {
-        const response = await fetch('/default-models.json')
+        const response = await fetch("/default-models.json")
         const data = await response.json()
         setModels(data.models || [])
       } catch (error) {
-        console.error('Failed to load models:', error)
-        // Fallback to basic models if loading fails
-        setModels([
-          {
-            id: "gpt-4o",
-            name: "GPT-4o",
-            provider: "OpenAI",
-            providerId: "openai",
-            enabled: true,
-            toolCallType: "native" as const,
-          }
-        ])
+        console.error("Failed to load models:", error)
+        setModels([])
       }
     }
     loadModels()
@@ -131,10 +121,9 @@ export default function HomePage() {
             <div className="w-12 h-12 mx-auto bg-primary/10 rounded-full flex items-center justify-center">
               <Sparkles className="h-6 w-6 text-primary" />
             </div>
-            <h3 className="text-xl font-semibold">Multiple AI Models</h3>
+            <h3 className="text-xl font-semibold">DeepSeek AI Model</h3>
             <p className="text-muted-foreground">
-              Choose from various AI models including GPT-4, Claude, and more to find the perfect assistant for your
-              task.
+              Powered by DeepSeek V3, providing intelligent and accurate responses for all your needs.
             </p>
           </div>
 

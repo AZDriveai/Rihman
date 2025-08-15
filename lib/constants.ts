@@ -1,6 +1,6 @@
 export const CHAT_ID = "chat-id"
 
-export const DEFAULT_MODEL_NAME = "DeepSeek Chat"
+export const DEFAULT_MODEL_NAME = "DeepSeek V3"
 
 export const SEARCH_ENABLED = process.env.SEARCH_ENABLED === "true"
 

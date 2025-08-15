@@ -1,0 +1,13 @@
+{
+  "models": [
+    {
+      "id": "deepseek-v3",
+      "name": "DeepSeek V3",
+      "provider": "DeepSeek",
+      "description": "Advanced reasoning model with strong performance across various tasks",
+      "maxTokens": 8192,
+      "supportsToolCalling": true,
+      "toolCallingMode": "manual"
+    }
+  ]
+}
