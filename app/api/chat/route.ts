@@ -7,16 +7,31 @@ export const maxDuration = 30
 
 export async function POST(req: NextRequest) {
   try {
-    const { messages, id } = await req.json()
+    const { messages, id, model: selectedModel } = await req.json()
 
     // Convert messages to the format expected by the AI SDK
     const coreMessages = convertToCoreMessages(messages)
 
-    // Default to GPT-4o for now - in a real app, this would be configurable
-    const model = openai("gpt-4o")
+    let modelInstance;
+    switch (selectedModel) {
+      case "groq/llama3-8b-8192":
+        modelInstance = openai.chat("llama3-8b-8192", { baseURL: "https://api.groq.com/openai/v1" });
+        break;
+      case "groq/llama3-70b-8192":
+        modelInstance = openai.chat("llama3-70b-8192", { baseURL: "https://api.groq.com/openai/v1" });
+        break;
+      case "deepseek/deepseek-chat":
+        modelInstance = openai.chat("deepseek-chat", { baseURL: "https://api.deepseek.com/v1" });
+        break;
+      case "deepseek/deepseek-coder":
+        modelInstance = openai.chat("deepseek-coder", { baseURL: "https://api.deepseek.com/v1" });
+        break;
+      default:
+        modelInstance = openai("gpt-4o"); // Default to GPT-4o if no specific model is selected or recognized
+    }
 
     const result = await streamText({
-      model,
+      model: modelInstance,
       messages: coreMessages,
       system:
         "You are Rihman AI, a helpful and intelligent assistant. Provide clear, accurate, and helpful responses to user queries.",
