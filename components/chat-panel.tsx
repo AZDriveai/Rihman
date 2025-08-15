@@ -75,12 +75,14 @@ export function ChatPanel({
   }
 
   const isToolInvocationInProgress = () => {
-    if (!messages.length) return false
+    if (!messages || !messages.length) return false
 
     const lastMessage = messages[messages.length - 1]
-    if (lastMessage.role !== "assistant" || !lastMessage.parts) return false
+    if (!lastMessage || lastMessage.role !== "assistant" || !lastMessage.parts || !Array.isArray(lastMessage.parts)) return false
 
     const parts = lastMessage.parts
+    if (!parts.length) return false
+    
     const lastPart = parts[parts.length - 1]
 
     return lastPart?.type === "tool-invocation" && lastPart?.toolInvocation?.state === "call"
@@ -157,7 +159,7 @@ export function ChatPanel({
             }}
             onKeyDown={(e) => {
               if (e.key === "Enter" && !e.shiftKey && !isComposing && !enterDisabled) {
-                if (input.trim().length === 0) {
+                if (!input || input.trim().length === 0) {
                   e.preventDefault()
                   return
                 }
@@ -194,7 +196,7 @@ export function ChatPanel({
                 size={"icon"}
                 variant={"outline"}
                 className={cn(isLoading && "animate-pulse", "rounded-full")}
-                disabled={(input.length === 0 && !isLoading) || isToolInvocationInProgress()}
+                disabled={((!input || input.length === 0) && !isLoading) || isToolInvocationInProgress()}
                 onClick={isLoading ? stop : undefined}
               >
                 {isLoading ? <Square size={20} /> : <ArrowUp size={20} />}
