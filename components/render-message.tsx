@@ -89,9 +89,25 @@ export function RenderMessage({
               onChange={(e) => setEditContent(e.target.value)}
               className="w-full min-h-[100px] p-3 border rounded-md resize-none focus:outline-none focus:ring-2 focus:ring-primary"
               autoFocus
+              onKeyDown={(e) => {
+                if (e.key === "Enter" && (e.ctrlKey || e.metaKey)) {
+                  e.preventDefault()
+                  if (editContent.trim().length > 0) {
+                    handleSaveEdit()
+                  }
+                }
+                if (e.key === "Escape") {
+                  e.preventDefault()
+                  handleCancelEdit()
+                }
+              }}
             />
             <div className="flex gap-2">
-              <Button size="sm" onClick={handleSaveEdit}>
+              <Button 
+                size="sm" 
+                onClick={handleSaveEdit}
+                disabled={editContent.trim().length === 0}
+              >
                 Save
               </Button>
               <Button size="sm" variant="outline" onClick={handleCancelEdit}>
