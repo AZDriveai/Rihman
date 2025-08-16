@@ -7,7 +7,7 @@ import { Globe } from "lucide-react"
 import { cn } from "@/lib/utils"
 import { getCookie, setCookie } from "@/lib/utils/cookies"
 
-import { Toggle } from "./ui/toggle"
+import { Toggle } from "@/components/ui/toggle"
 
 export function SearchModeToggle() {
   const [isSearchMode, setIsSearchMode] = useState(true)
