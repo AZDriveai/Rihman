@@ -192,7 +192,7 @@ export function ChatPanel({
                 size={"icon"}
                 variant={"outline"}
                 className={cn(isLoading && "animate-pulse", "rounded-full")}
-                disabled={!input || (input.length === 0 && !isLoading) || isToolInvocationInProgress()}
+                disabled={((!input || input.trim().length === 0) && !isLoading) || isToolInvocationInProgress()}
                 onClick={isLoading ? stop : undefined}
               >
                 {isLoading ? <Square size={20} /> : <ArrowUp size={20} />}
