@@ -17,6 +17,7 @@ import { Button } from "./ui/button"
 import { IconLogo } from "./ui/icons"
 import { EmptyScreen } from "./empty-screen"
 import { ModelSelector } from "./model-selector"
+import { SearchModeToggle } from "./search-mode-toggle"
 
 interface ChatPanelProps {
   input: string
@@ -173,6 +174,7 @@ export function ChatPanel({
           <div className="flex items-center justify-between p-3">
             <div className="flex items-center gap-2">
               <ModelSelector models={models || []} />
+              <SearchModeToggle />
             </div>
             <div className="flex items-center gap-2">
               {messages.length > 0 && (
@@ -192,7 +194,10 @@ export function ChatPanel({
                 size={"icon"}
                 variant={"outline"}
                 className={cn(isLoading && "animate-pulse", "rounded-full")}
-                disabled={((!input || input.trim().length === 0) && !isLoading) || isToolInvocationInProgress()}
+                disabled={
+                  (input.length === 0 && !isLoading) ||
+                  isToolInvocationInProgress()
+                }
                 onClick={isLoading ? stop : undefined}
               >
                 {isLoading ? <Square size={20} /> : <ArrowUp size={20} />}

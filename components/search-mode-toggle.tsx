@@ -1,72 +1,47 @@
 "use client"
 
-import { useState } from "react"
-import { Check, ChevronDown } from "lucide-react"
-import { Button } from "./ui/button"
-import { Command, CommandEmpty, CommandGroup, CommandInput, CommandItem, CommandList } from "./ui/command"
-import { Popover, PopoverContent, PopoverTrigger } from "./ui/popover"
+import { useEffect, useState } from "react"
+
+import { Globe } from "lucide-react"
+
 import { cn } from "@/lib/utils"
+import { getCookie, setCookie } from "@/lib/utils/cookies"
 
-interface SearchModeToggleProps {
-  // Add any props specific to SearchModeToggle if needed
-}
+import { Toggle } from "./ui/toggle"
 
-export function SearchModeToggle({}: SearchModeToggleProps) {
-  const [open, setOpen] = useState(false)
-  const [searchMode, setSearchMode] = useState("web") // Default search mode
+export function SearchModeToggle() {
+  const [isSearchMode, setIsSearchMode] = useState(true)
 
-  const handleSelect = (mode: string) => {
-    setSearchMode(mode)
-    setOpen(false)
+  useEffect(() => {
+    const savedMode = getCookie("search-mode")
+    if (savedMode !== null) {
+      setIsSearchMode(savedMode === "true")
+    } else {
+      setCookie("search-mode", "true")
+    }
+  }, [])
+
+  const handleSearchModeChange = (pressed: boolean) => {
+    setIsSearchMode(pressed)
+    setCookie("search-mode", pressed.toString())
   }
 
   return (
-    <Popover open={open} onOpenChange={setOpen}>
-      <PopoverTrigger asChild>
-        <Button
-          variant="outline"
-          role="combobox"
-          aria-expanded={open}
-          className="w-[150px] justify-between bg-transparent"
-          size="sm"
-        >
-          <div className="flex items-center gap-2">
-            <span className="truncate">{searchMode === "web" ? "Web Search" : "No Search"}</span>
-          </div>
-          <ChevronDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
-        </Button>
-      </PopoverTrigger>
-      <PopoverContent className="w-[150px] p-0">
-        <Command>
-          <CommandList>
-            <CommandEmpty>No search modes found.</CommandEmpty>
-            <CommandGroup>
-              <CommandItem value="web" onSelect={() => handleSelect("web")}>
-                <div className="flex items-center gap-2 flex-1">
-                  <span className="text-sm font-medium">Web Search</span>
-                </div>
-                <Check
-                  className={cn("ml-auto h-4 w-4", {
-                    "opacity-100": searchMode === "web",
-                    "opacity-0": searchMode !== "web",
-                  })}
-                />
-              </CommandItem>
-              <CommandItem value="none" onSelect={() => handleSelect("none")}>
-                <div className="flex items-center gap-2 flex-1">
-                  <span className="text-sm font-medium">No Search</span>
-                </div>
-                <Check
-                  className={cn("ml-auto h-4 w-4", {
-                    "opacity-100": searchMode === "none",
-                    "opacity-0": searchMode !== "none",
-                  })}
-                />
-              </CommandItem>
-            </CommandGroup>
-          </CommandList>
-        </Command>
-      </PopoverContent>
-    </Popover>
+    <Toggle
+      aria-label="Toggle search mode"
+      pressed={isSearchMode}
+      onPressedChange={handleSearchModeChange}
+      variant="outline"
+      className={cn(
+        "gap-1 px-3 border border-input text-muted-foreground bg-background",
+        "data-[state=on]:bg-primary",
+        "data-[state=on]:text-primary-foreground",
+        "data-[state=on]:border-primary",
+        "hover:bg-accent hover:text-accent-foreground rounded-full"
+      )}
+    >
+      <Globe className="size-4" />
+      <span className="text-xs">Search</span>
+    </Toggle>
   )
 }

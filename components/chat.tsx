@@ -40,6 +40,7 @@ export function Chat({
   const {
     messages,
     input,
+    handleInputChange,
     handleSubmit,
     status,
     setMessages,
@@ -49,7 +50,6 @@ export function Chat({
     setData,
     addToolResult,
     reload,
-    setInput,
   } = useChat({
     initialMessages: savedMessages,
     id: CHAT_ID,
@@ -66,10 +66,6 @@ export function Chat({
     sendExtraMessageFields: false, // Disable extra message fields,
     experimental_throttle: 100,
   })
-
-  const handleInputChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
-    setInput(e.target.value)
-  }
 
   const isLoading = status === "submitted" || status === "streaming"
 
